@@ -1,7 +1,7 @@
-use std::{collections::HashMap, fmt::format, sync::Arc};
+use std::{collections::HashMap, sync::Arc};
 
 use axum::{
-    extract::{Json, Path, Query},
+    extract::{Json, Path},
     http::StatusCode,
     response,
     routing::{get, post},
@@ -111,7 +111,11 @@ async fn add_user(
 
     (
         StatusCode::OK,
-        response::Json(AddUserResponse { id: Some(id),succeed: true, errors: vec![]}),
+        response::Json(AddUserResponse {
+            id: Some(id),
+            succeed: true,
+            errors: vec![],
+        }),
     )
 }
 
@@ -145,6 +149,3 @@ async fn get_user(
 
     response::Json(GetUserResponse { user })
 }
-
-
-
