@@ -3,13 +3,6 @@ name = "rust_course"
 version = "0.1.0"
 edition = "2021"
 
-[[bench]]
-name = "add"
-harness = false
-
-[dev-dependencies]
-criterion = "0.5.1"
-
 [dependencies]
 axum = "0.7.7"
 chrono = { version = "0.4.38", features = ["serde"] }
