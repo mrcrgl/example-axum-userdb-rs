@@ -1,7 +1,12 @@
+mod models;
+mod persistence;
+mod services;
+
 use std::{collections::HashMap, sync::Arc};
 
 use axum::{
-    extract::{Json, Path},
+    extract,
+    extract::Path,
     http::StatusCode,
     response,
     routing::{get, post},
@@ -11,13 +16,11 @@ use serde::{Deserialize, Serialize};
 use tokio::sync::Mutex;
 use tower_http::trace::TraceLayer;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
-struct User {
-    id: uuid::Uuid,
-    username: String,
-    email: String,
-    created_at: chrono::DateTime<chrono::Utc>,
+fn main() {
+    unimplemented!()
 }
+
+/*
 
 type UserDatabase = HashMap<uuid::Uuid, User>;
 
@@ -83,7 +86,7 @@ struct AddUserResponse {
 
 async fn add_user(
     Extension(user_db): Extension<Arc<Mutex<UserDatabase>>>,
-    Json(user): Json<UserInput>,
+    extract::Json(user): extract::Json<UserInput>,
 ) -> (StatusCode, response::Json<AddUserResponse>) {
     if let Some(errors) = user.validate() {
         let response_body = AddUserResponse {
@@ -149,3 +152,4 @@ async fn get_user(
 
     response::Json(GetUserResponse { user })
 }
+*/

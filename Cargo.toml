@@ -1,12 +1,15 @@
 [package]
-name = "rust_course"
+name = "example-axum-userdb"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+async-trait = "0.1.83"
 axum = "0.7.7"
 chrono = { version = "0.4.38", features = ["serde"] }
 serde = { version = "1.0.210", features = ["derive"] }
+sqlx = { version = "0.8.2", features = ["tls-rustls", "runtime-tokio", "postgres"] }
+thiserror = "1.0.64"
 tokio = { version = "1.40.0", features = ["full"] }
 tower = { version = "0.5.1", features = ["tokio", "tracing"] }
 tower-http = { version = "0.6.1", features = ["full"] }
