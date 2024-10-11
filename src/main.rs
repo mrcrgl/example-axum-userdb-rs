@@ -30,7 +30,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + 'static>> {
         .init();
 
 
-    let user_service = UserService::new_for_config(config.user_service);
+    let user_service = UserService::new_for_config(config.user_service).await;
     let user_service_router = create_user_service_router(user_service);
 
     let app = Router::new()

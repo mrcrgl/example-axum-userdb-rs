@@ -3,18 +3,20 @@ use crate::persistence::driver_trait::PersistenceDriver;
 use crate::persistence::error::PersistenceError;
 use std::collections::HashMap;
 use std::hash::Hash;
-use std::marker::PhantomData;
 use std::sync::Arc;
+use sqlx::{Connection, Executor};
 use tokio::sync::Mutex;
 
 pub struct PostgresPersistenceDriver<PrimaryKey, Item> {
     storage: Arc<Mutex<HashMap<PrimaryKey, Item>>>,
+    conn: Arc<Mutex<sqlx::PgConnection>>,
 }
 
 impl<PrimaryKey, Item> PostgresPersistenceDriver<PrimaryKey, Item> {
-    pub fn new_for_config(config: PostgresPersistenceDiverConfig) -> Self {
+    pub async fn new_for_config(config: PostgresPersistenceDiverConfig) -> Self {
         Self {
-            storage: Default::default(),
+            storage: Arc::new(Default::default()),
+            conn: Arc::new(Mutex::new(sqlx::PgConnection::connect(config.connection_string.as_str()).await.unwrap()))
         }
     }
 }

@@ -7,7 +7,7 @@ use std::hash::Hash;
 pub mod in_memory;
 pub mod postgres;
 
-pub fn load_driver_for_config<'a, I, P>(
+pub async fn load_driver_for_config<'a, I, P>(
     config: PersistenceDriverSelection,
 ) -> Box<dyn PersistenceDriver<Item = I, PrimaryKey = P> + Send + Sync + 'a>
 where
@@ -17,7 +17,7 @@ where
     match config {
         PersistenceDriverSelection::InMemory => Box::new(InMemoryPersistenceDriver::<P, I>::new()),
         PersistenceDriverSelection::Postgres(postgres_config) => Box::new(
-            PostgresPersistenceDriver::<P, I>::new_for_config(postgres_config),
+            PostgresPersistenceDriver::<P, I>::new_for_config(postgres_config).await,
         ),
     }
 }

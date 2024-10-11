@@ -8,9 +8,9 @@ pub struct UserService {
 }
 
 impl UserService {
-    pub fn new_for_config(config: UserServiceConfig) -> UserService {
+    pub async fn new_for_config(config: UserServiceConfig) -> UserService {
         UserService {
-            persistence_driver: load_driver_for_config(config.persistence),
+            persistence_driver: load_driver_for_config(config.persistence).await,
         }
     }
 
