@@ -1,0 +1,3 @@
+user_service:
+  persistence:
+    driver: in_memory

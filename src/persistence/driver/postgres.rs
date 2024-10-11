@@ -1,52 +1,43 @@
+use crate::config::PostgresPersistenceDiverConfig;
 use crate::persistence::driver_trait::PersistenceDriver;
 use crate::persistence::error::PersistenceError;
 use std::collections::HashMap;
 use std::hash::Hash;
+use std::marker::PhantomData;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 
-pub struct InMemoryPersistenceDriver<PrimaryKey, Item>
-where
-    PrimaryKey: Hash,
-{
+pub struct PostgresPersistenceDriver<PrimaryKey, Item> {
     storage: Arc<Mutex<HashMap<PrimaryKey, Item>>>,
 }
 
-impl<P, I> InMemoryPersistenceDriver<P, I>
-where
-    P: Send + Hash,
-    I: Send,
-{
-    pub fn new() -> Self {
+impl<PrimaryKey, Item> PostgresPersistenceDriver<PrimaryKey, Item> {
+    pub fn new_for_config(config: PostgresPersistenceDiverConfig) -> Self {
         Self {
-            storage: Arc::new(Mutex::new(HashMap::new())),
+            storage: Default::default(),
         }
     }
 }
 
 #[async_trait::async_trait]
-impl<P, I> PersistenceDriver for InMemoryPersistenceDriver<P, I>
+impl<P, I> PersistenceDriver for PostgresPersistenceDriver<P, I>
 where
-    P: Send + Hash + Eq,
+    P: Send,
     I: Send + Clone,
 {
     type PrimaryKey = P;
     type Item = I;
 
     async fn get_item(&self, id: Self::PrimaryKey) -> Result<Option<Self::Item>, PersistenceError> {
-        let guard = self.storage.lock().await;
-        Ok(guard.get(&id).cloned())
+        unimplemented!()
     }
 
     async fn list_items(&self) -> Result<Vec<Self::Item>, PersistenceError> {
-        let guard = self.storage.lock().await;
-        Ok(guard.values().cloned().collect())
+        unimplemented!()
     }
 
     async fn delete_item(&self, id: Self::PrimaryKey) -> Result<(), PersistenceError> {
-        let mut guard = self.storage.lock().await;
-        guard.remove(&id);
-        Ok(())
+        unimplemented!()
     }
 
     async fn add_item(
@@ -54,8 +45,6 @@ where
         pk: Self::PrimaryKey,
         item: Self::Item,
     ) -> Result<(), PersistenceError> {
-        let mut guard = self.storage.lock().await;
-        guard.insert(pk, item);
-        Ok(())
+        unimplemented!()
     }
 }
